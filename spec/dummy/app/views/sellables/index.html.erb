@@ -1,0 +1,43 @@
+<h1>Produits</h1>
+
+<% @sellables.each do |sellable| %>
+
+<div>
+  <h2><%= sellable.name %></h2>
+
+  <p>
+    <em>
+      <%= sellable.description %>
+    </em>
+  </p>
+
+  <div>
+    Prix :
+      <%= number_to_currency(sellable.eot_price) %> HT /
+      <%= number_to_currency(sellable.price) %> TTC
+  </div>
+
+  <h3>Déclinaisons</h3>
+
+  <table border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+        <th>
+          Code-barres
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% sellable.variants.each do |variant| %>
+        <tr>
+          <td>
+            <%= variant.sku %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<br>
+<br>
+<% end %>

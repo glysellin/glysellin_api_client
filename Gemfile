@@ -12,3 +12,5 @@ gemspec
 
 # To use debugger
 # gem 'debugger'
+
+gem "glysellin", path: "/Users/vala/gems/glysellin"
