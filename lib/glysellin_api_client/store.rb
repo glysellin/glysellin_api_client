@@ -8,10 +8,12 @@ module GlysellinApiClient
       @models = {}
     end
 
-    def request path
-      response = RestClient.get(url_for(path), accept: :json)
+    def request path, params = {}
+      response = RestClient.get(url_for(path), { params: params, accept: :json })
       deserializer = Deserializer.new(self, response.to_str)
-      merge_models(deserializer.deserialize!)
+      models = deserializer.deserialize!
+      merge_models(models)
+      models[path]
     end
 
     def merge_models new_models
@@ -24,9 +26,8 @@ module GlysellinApiClient
       end
     end
 
-    def find model_name, id = nil
-      request(model_name.pluralize)
-      models[model_name.pluralize].values
+    def find model_name, params = {}
+      request(model_name.pluralize, params).values
     end
 
     private
