@@ -6,16 +6,13 @@ module GlysellinApiClient
 
     def initialize store, json
       @store = store
-      @json = json
+      @json = MultiJson.load(json)
     end
 
     def deserialize!
-      MultiJson.load(json).reduce({}) do |hash, (name, array)|
-        if name == 'children'
-          singular_name = 'taxonomy'
-        else
-          singular_name = name.singularize
-        end
+      @data = json.reduce({}) do |hash, (name, array)|
+        name = 'taxonomies' if name == 'children'
+        singular_name = name.singularize
 
         model = "glysellin/#{ singular_name }".camelize.constantize
 
@@ -29,8 +26,19 @@ module GlysellinApiClient
           models_hash
         end
 
-        hash[name] = models
+        hash[name] ||= {}
+        hash[name].merge!(models)
         hash
+      end
+    end
+
+    def response_ids_for key
+      json[key].map { |item| item['id'] }
+    end
+
+    def response_models_for key
+      response_ids_for(key).each_with_object({}) do |id, hash|
+        hash[id] = @data[key][id]
       end
     end
 
@@ -42,19 +50,13 @@ module GlysellinApiClient
     end
 
     def prepare_model_attributes!(model, attributes)
-      instance = model.new
-
       attributes.each do |key|
-        unless instance.respond_to?(key)
-          model.send(:define_method, :"#{ key }") do
-            instance_variable_get(:"@#{ key }")
-          end
+        model.send(:define_method, :"#{ key }") do
+          instance_variable_get(:"@#{ key }")
         end
 
-        unless instance.respond_to?(:"#{ key }=")
-          model.send(:define_method, :"#{ key }=") do |value|
-            instance_variable_set(:"@#{ key }", value)
-          end
+        model.send(:define_method, :"#{ key }=") do |value|
+          instance_variable_set(:"@#{ key }", value)
         end
       end
     end
@@ -62,11 +64,7 @@ module GlysellinApiClient
     def build_instance model, attributes
       model.new do |instance|
         attributes.each do |attribute, value|
-          if model.attribute_names.include?(attribute)
-            instance.send(:write_attribute, attribute, value)
-          else
-            instance.send(:"#{ attribute }=", value)
-          end
+          instance.send(:"#{ attribute }=", value)
         end
       end
     end

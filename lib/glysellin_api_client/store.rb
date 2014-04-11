@@ -13,7 +13,7 @@ module GlysellinApiClient
       deserializer = Deserializer.new(self, response.to_str)
       models = deserializer.deserialize!
       merge_models(models)
-      models[path]
+      deserializer.response_models_for(path)
     end
 
     def merge_models new_models

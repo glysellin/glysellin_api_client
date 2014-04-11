@@ -8,7 +8,7 @@ PATH
       rest-client
 
 PATH
-  remote: /Users/vala/gems/glysellin
+  remote: /Users/user/Dropbox/Research/glyph/glysellin
   specs:
     glysellin (0.4.1.1)
       active_model_serializers
@@ -39,7 +39,7 @@ GEM
     active_utils (2.0.2)
       activesupport (>= 2.3.11)
       i18n
-    activemerchant (1.42.7)
+    activemerchant (1.42.8)
       active_utils (~> 2.0, >= 2.0.1)
       activesupport (>= 2.3.14, < 5.0.0)
       builder (>= 2.1.2, < 4.0.0)
@@ -126,9 +126,9 @@ GEM
     rake (10.2.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    simple_form (3.0.1)
-      actionpack (>= 4.0.0, < 4.1)
-      activemodel (>= 4.0.0, < 4.1)
+    simple_form (3.0.2)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
     sprockets (2.12.0)
       hike (~> 1.2)
       multi_json (~> 1.0)

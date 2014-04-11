@@ -33,7 +33,7 @@ module GlysellinApiClient
     private
 
     def query_collection_stored_model association
-      ids = send(association.association_foreign_key.pluralize)
+      ids = send(association.plural_name.singularize + '_ids')
       key = store_key_for(association)
 
       ids.map do |id|

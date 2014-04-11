@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 # Declare your gem's dependencies in glysellin_api_client.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -13,4 +13,4 @@ gemspec
 # To use debugger
 # gem 'debugger'
 
-gem "glysellin", path: "/Users/vala/gems/glysellin"
+gem 'glysellin', path: '/Users/user/Dropbox/Research/glyph/glysellin'
