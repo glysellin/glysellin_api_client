@@ -20,15 +20,12 @@ module GlysellinApiClient
             query_single_stored_model(association)
           end
 
-          # Cache relation
           instance_variable_set(:"@#{ name }", cached)
-
           cached
         end
 
         foreign_key = association.association_foreign_key
         foreign_key = foreign_key.pluralize if association.collection?
-
         attr_accessor foreign_key
       end
     end
@@ -37,7 +34,6 @@ module GlysellinApiClient
 
     def query_collection_stored_model association
       ids = send(association.association_foreign_key.pluralize)
-
       key = store_key_for(association)
 
       ids.map do |id|

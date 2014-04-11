@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140403086034) do
+ActiveRecord::Schema.define(version: 20140411131003) do
 
   create_table "glysellin_addresses", force: true do |t|
     t.boolean  "activated",                default: true
@@ -47,11 +47,14 @@ ActiveRecord::Schema.define(version: 20140403086034) do
   end
 
   create_table "glysellin_customers", force: true do |t|
-    t.string  "first_name"
-    t.string  "last_name"
-    t.string  "corporate"
-    t.string  "email"
-    t.boolean "use_another_address_for_shipping", default: false
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "corporate"
+    t.string   "email"
+    t.boolean  "use_another_address_for_shipping", default: false
   end
 
   create_table "glysellin_discount_codes", force: true do |t|
@@ -90,11 +93,11 @@ ActiveRecord::Schema.define(version: 20140403086034) do
     t.decimal  "price",      precision: 11, scale: 2
     t.decimal  "vat_rate",   precision: 11, scale: 2
     t.integer  "quantity"
-    t.integer  "order_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "weight",     precision: 11, scale: 3
     t.integer  "variant_id"
+    t.integer  "package_id"
   end
 
   create_table "glysellin_order_adjustments", force: true do |t|
@@ -111,6 +114,7 @@ ActiveRecord::Schema.define(version: 20140403086034) do
     t.string   "ref"
     t.string   "status"
     t.datetime "paid_on"
+    t.integer  "user_id"
     t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -121,6 +125,14 @@ ActiveRecord::Schema.define(version: 20140403086034) do
     t.string   "shipment_state"
     t.decimal  "total_price",                      precision: 11, scale: 2
     t.decimal  "total_eot_price",                  precision: 11, scale: 2
+  end
+
+  create_table "glysellin_parcels", force: true do |t|
+    t.string   "name"
+    t.integer  "sendable_id"
+    t.string   "sendable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "glysellin_payment_methods", force: true do |t|
@@ -236,10 +248,13 @@ ActiveRecord::Schema.define(version: 20140403086034) do
   end
 
   create_table "glysellin_taxonomies", force: true do |t|
-    t.string "name"
-    t.text   "description"
-    t.string "barcode_ref"
+    t.string  "name"
+    t.text    "description"
+    t.string  "barcode_ref"
+    t.integer "parent_id"
   end
+
+  add_index "glysellin_taxonomies", ["parent_id"], name: "index_glysellin_taxonomies_on_parent_id"
 
   create_table "glysellin_variant_properties", force: true do |t|
     t.integer "variant_id"

@@ -11,7 +11,12 @@ module GlysellinApiClient
 
     def deserialize!
       MultiJson.load(json).reduce({}) do |hash, (name, array)|
-        singular_name = name.singularize
+        if name == 'children'
+          singular_name = 'taxonomy'
+        else
+          singular_name = name.singularize
+        end
+
         model = "glysellin/#{ singular_name }".camelize.constantize
 
         prepare_model_class!(model)
