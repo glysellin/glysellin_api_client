@@ -15,6 +15,7 @@ module GlysellinApiClient
         singular_name = name.singularize
 
         model = "glysellin/#{ singular_name }".camelize.constantize
+        array = array.is_a?(Hash) ? [array] : array
 
         prepare_model_class!(model)
         prepare_model_attributes!(model, array.first.keys) if array.length > 0
@@ -32,11 +33,16 @@ module GlysellinApiClient
       end
     end
 
+    def correct_key key
+      (key.split('/').size == 1) ? key : key.split('/').first.singularize
+    end
+
     def response_ids_for key
-      json[key].map { |item| item['id'] }
+      json[key].is_a?(Array) ? json[key].map { |item| item['id'] } : [json[key]['id']]
     end
 
     def response_models_for key
+      key = correct_key key
       response_ids_for(key).each_with_object({}) do |id, hash|
         hash[id] = @data[key][id]
       end
