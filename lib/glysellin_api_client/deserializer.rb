@@ -34,6 +34,7 @@ module GlysellinApiClient
     end
 
     def correct_key key
+      key = key.to_s
       (key.split('/').size == 1) ? key : key.split('/').first.singularize
     end
 
@@ -42,10 +43,15 @@ module GlysellinApiClient
     end
 
     def response_models_for key
-      key = correct_key key
+      key = correct_key(key)
+
       response_ids_for(key).each_with_object({}) do |id, hash|
         hash[id] = @data[key][id]
       end
+    end
+
+    def find key
+      response_models_for(key).values
     end
 
     private
