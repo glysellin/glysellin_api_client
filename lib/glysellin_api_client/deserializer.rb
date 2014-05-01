@@ -2,11 +2,12 @@ require "multi_json"
 
 module GlysellinApiClient
   class Deserializer
-    attr_reader :store, :json
+    attr_reader :store, :json, :meta
 
     def initialize store, json
       @store = store
       @json = MultiJson.load(json)
+      @meta = @json['meta'].present? ? @json.delete('meta') : {}
     end
 
     def deserialize!
@@ -51,6 +52,10 @@ module GlysellinApiClient
 
     def find key
       response_models_for(key).values
+    end
+
+    def errors
+      meta.fetch('errors', {})
     end
   end
 end

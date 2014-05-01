@@ -57,8 +57,9 @@ module GlysellinApiClient
           content_type: :json, accept: :json
         }
       )
-
       deserialize(response)
+    rescue RestClient::ExceptionWithResponse => e
+      deserialize(e.http_body)
     end
 
     def deserialize response
