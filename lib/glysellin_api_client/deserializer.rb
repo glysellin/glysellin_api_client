@@ -14,14 +14,13 @@ module GlysellinApiClient
         name = 'taxonomies' if name == 'children'
         singular_name = name.singularize
 
-        model = "glysellin/#{ singular_name }".camelize.constantize
+        model = "::Api::#{ singular_name.camelize }".constantize
         array = array.is_a?(Hash) ? [array] : array
 
-        prepare_model_class!(model)
-        prepare_model_attributes!(model, array.first.keys) if array.length > 0
+        model.store = store
 
         models = array.reduce({}) do |models_hash, attributes|
-          instance = build_instance(model, attributes)
+          instance = model.new(attributes)
 
           models_hash[attributes['id']] = instance
           models_hash
@@ -52,33 +51,6 @@ module GlysellinApiClient
 
     def find key
       response_models_for(key).values
-    end
-
-    private
-
-    def prepare_model_class!(model)
-      model.send(:include, GlysellinApiClient::StoredRelations)
-      model.send(:store=, store)
-    end
-
-    def prepare_model_attributes!(model, attributes)
-      attributes.each do |key|
-        model.send(:define_method, :"#{ key }") do
-          instance_variable_get(:"@#{ key }")
-        end
-
-        model.send(:define_method, :"#{ key }=") do |value|
-          instance_variable_set(:"@#{ key }", value)
-        end
-      end
-    end
-
-    def build_instance model, attributes
-      model.new do |instance|
-        attributes.each do |attribute, value|
-          instance.send(:"#{ attribute }=", value)
-        end
-      end
     end
   end
 end

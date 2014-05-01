@@ -36,10 +36,12 @@ module GlysellinApiClient
       ids = send(association.plural_name.singularize + '_ids')
       key = store_key_for(association)
 
-      if ids.present? && ids.any?
+      if ids.present?
         ids.map do |id|
           self.class.store.models[key][id]
         end
+      else
+        []
       end
     end
 
