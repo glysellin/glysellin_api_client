@@ -8,11 +8,12 @@ PATH
       rest-client
 
 PATH
-  remote: /Users/user/Dropbox/Research/glyph/glysellin
+  remote: /Users/user/Documents/glysellin
   specs:
     glysellin (0.4.1.1)
       active_model_serializers
       activemerchant
+      aws-sdk
       country_select
       devise
       friendly_id (~> 5.0)
@@ -39,7 +40,7 @@ GEM
     active_utils (2.0.2)
       activesupport (>= 2.3.11)
       i18n
-    activemerchant (1.42.8)
+    activemerchant (1.43.1)
       active_utils (~> 2.0, >= 2.0.1)
       activesupport (>= 2.3.14, < 5.0.0)
       builder (>= 2.1.2, < 4.0.0)
@@ -66,6 +67,9 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.2)
     atomic (1.1.16)
+    aws-sdk (1.40.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     bcrypt (3.1.7)
     builder (3.1.4)
     climate_control (0.0.3)

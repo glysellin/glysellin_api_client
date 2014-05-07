@@ -13,4 +13,4 @@ gemspec
 # To use debugger
 # gem 'debugger'
 
-gem 'glysellin', path: '/Users/user/Dropbox/Research/glyph/glysellin'
+gem 'glysellin', path: '/Users/user/Documents/glysellin'
