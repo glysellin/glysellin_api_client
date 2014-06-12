@@ -35,7 +35,7 @@ module GlysellinApiClient
     end
 
     def base_uri
-      'http://localhost:5000/api'
+      "#{ENV['API_URL'] || 'http://localhost:5000'}/api"
     end
 
     def perform method, path, params
