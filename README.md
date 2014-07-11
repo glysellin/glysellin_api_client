@@ -19,7 +19,7 @@ Generate a Glysellin::ClientStore token in your Glysellin backend app and add it
 to your client's Glysellin initializer config along with the backend's enpoint.
 Note that using `ENV` vars is the preferred way.
 
-```
+```ruby
 # config/initializers/glysellin.rb
 
 Glysellin.config do |config|
