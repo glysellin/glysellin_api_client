@@ -36,7 +36,7 @@ module Glysellin
       end
 
       def base_uri
-        Glysellin::ApiClient.api_endpoint
+        @base_uri ||= Glysellin::ApiClient.api_endpoint
       end
 
       def perform method, path, params
@@ -58,6 +58,7 @@ module Glysellin
             content_type: :json, accept: :json
           }
         )
+
         deserialize(response)
       rescue RestClient::ExceptionWithResponse => e
         deserialize(e.http_body)
