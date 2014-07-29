@@ -40,7 +40,13 @@ module Glysellin
       end
 
       def response_ids_for key
-        json[key].is_a?(Array) ? json[key].map { |item| item['id'] } : [json[key]['id']]
+        return [] unless json[key]
+
+        if json[key].is_a?(Array)
+          json[key].map { |item| item['id'] }
+        else
+          [json[key]['id']]
+        end
       end
 
       def response_models_for key
