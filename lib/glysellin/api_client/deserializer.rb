@@ -22,7 +22,14 @@ module Glysellin
           model.store = store
 
           models = array.reduce({}) do |models_hash, attributes|
-            instance = model.new(attributes)
+            instance = model.new
+            attributes.each do |attribute, value|
+              method_name = :"#{ attribute }="
+
+              if instance.respond_to?(method_name)
+                instance.send(method_name, value)
+              end
+            end
 
             models_hash[attributes['id']] = instance
             models_hash
