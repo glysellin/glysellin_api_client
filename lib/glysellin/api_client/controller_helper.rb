@@ -2,7 +2,7 @@ module Glysellin
   module ApiClient
     module ControllerHelper
       def store
-        @store ||= Glysellin::ApiClient::Store.new
+        Glysellin.api_client.store
       end
     end
   end

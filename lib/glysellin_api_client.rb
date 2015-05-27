@@ -1,3 +1,5 @@
+require 'request_store'
+
 module Glysellin
   # Allow accessing ApiClient config through Glysellin config with :
   #   `config.api_client.<param> = ...`
@@ -11,6 +13,11 @@ module Glysellin
 
     mattr_accessor :api_endpoint
     @@api_endpoint = nil
+
+    def self.store
+      RequestStore.store[:glysellin_api_client_store] ||=
+        Glysellin::ApiClient::Store.new
+    end
   end
 end
 
