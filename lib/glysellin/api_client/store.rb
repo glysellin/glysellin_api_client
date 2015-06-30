@@ -29,6 +29,12 @@ module Glysellin
         perform(:delete, path, params)
       end
 
+      # Allows calling get/post/patch/delete in an abstract manner
+      #
+      def request(method, *args)
+        public_send(method, *args)
+      end
+
       def find(key, id)
         models[key] && models[key][id]
       end
