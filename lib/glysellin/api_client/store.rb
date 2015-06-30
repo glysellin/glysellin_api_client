@@ -46,6 +46,7 @@ module Glysellin
       def perform(method, path, params)
         params = default_params.deep_merge(params)
         params = params.merge(api_key: Glysellin.api_client.default_store_client_key)
+        params = flatten_params(params)
 
         response = RestClient.send(
           method, url_for(path), params: params, accept: :json
@@ -83,6 +84,22 @@ module Glysellin
             models[type].merge!(hash)
           else
             models[type] = hash
+          end
+        end
+      end
+
+      # Allows handling nested hash params, since it's not built into
+      # RestClient
+      #
+      # ex : { search: { name: 'foo' } } => { 'search[name]' => 'foo' }
+      def flatten_params(params, namespace = nil)
+        params.each_with_object({}) do |(key, value), hash|
+          nested_key = namespace ? "#{ namespace }[#{ key }]" : key
+
+          if value.is_a?(Hash)
+            hash.merge!(flatten_params(value, nested_key))
+          else
+            hash[nested_key] = value
           end
         end
       end
